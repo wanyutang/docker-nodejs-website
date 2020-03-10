@@ -1,0 +1,29 @@
+# docker-compose -f docker/docker-compose-nodejs.yml -f docker/docker-compose-mongo.yml config > docker/docker-compose-f3.yml
+# Use root/example as user/password credentials
+# docker push wanyutang/nodejs-website:alpine1.0
+version: "3.1"
+
+services:
+  nodejs-website-demo:
+    container_name: nodejs-website-demo
+    build:
+      context: .
+    image: wanyutang/nodejs-website:alpine0.1
+    restart: always
+    ports:
+      - 3003:3000
+      - 9003:9320
+    environment:
+      - GIT_PATH=git@bitbucket.org:fun3w/f3-zprint-api.git -b dev
+    volumes:
+      - .:/tmp/resources
+      - /tmp/id_rsa:/tmp/id_rsa
+    networks:
+      - backend
+volumes:
+  volume-demo:
+    external: true
+networks:
+  backend:
+    external:
+      name: network-backend
