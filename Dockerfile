@@ -2,17 +2,15 @@ FROM node:alpine
 
 
 # Install software   && \
-RUN apk add --no-cache git
-RUN apk add --no-cache openssh
+RUN apk add --no-cache git && \
+    apk add --no-cache openssh
 
 ENV WEBSITE_PATH=/website
 
 WORKDIR /tmp/resources
-COPY . /website
-COPY ./docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
-RUN chmod +x /usr/bin/docker-entrypoint.sh
+COPY . ${WEBSITE_PATH}
 
-WORKDIR /website
+WORKDIR ${WEBSITE_PATH}
 RUN cp ./app/index.js .
 
 # RUN cp ./app/index.js /website/index.js && \
@@ -37,6 +35,6 @@ RUN cp ./app/index.js .
 
 # COPY /tmp/resources/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 # RUN chmod +x /usr/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+# ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["1"]
+CMD ["npm","run","start"]
