@@ -4,19 +4,21 @@
 version: "3.1"
 
 services:
-  zprint-api:
-    container_name: zprint-api
-    image: node:alpine
+  node-website:
+    container_name: node-website
+    build:
+      context: .
+    image: fun3w/node-website
     restart: always
     ports:
       - 3003:3000
       - 9003:9320
     volumes:
-      - .:/website
+      - ./app:/website
     networks:
       - backend
 volumes:
-  volume-zprint:
+  volume-demo:
     external: true
 networks:
   backend:
